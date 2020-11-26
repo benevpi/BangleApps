@@ -1,0 +1,15 @@
+  
+// Create an entry in apps.json as follows:
+{ "id": "sleepqualmon",
+  "name": "Sleep Quality Monitor",
+  "shortName":"Sleep Quality Monitor",
+  "icon": "widget.png",
+  "version":"0.01",
+  "description": "Records the quality of your sleep every 100 seconds. You have to manage the data yourself as it will just keep growing",
+  "tags": "widget",
+  "type": "widget",
+  "readme": "README.md",
+  "storage": [
+    {"name":"sleepqualmon.wid.js","url":"widget.js"}
+  ]
+}
