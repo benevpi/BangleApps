@@ -1,3 +1,5 @@
+
+
 (() => {
   function draw() {
     g.reset(); // reset the graphics context to defaults (color/font/etc)
@@ -13,9 +15,15 @@
 // start of sleep marker is delayed by sleepthresh due to continous data reading
 
 // Adapted by Ben Everard to simply record your sleep phases over time
+
+
+// NOTE at the moment you have to manually delete the file every day otherwise it gets too big and kills your watch. You have to reinstall software from the start to fix this.
 const winwidth=13;
-const nomothresh=0.006;
-const sleepthresh=600;
+//const nomothresh=0.006; // also far too high
+ nomothresh=0.006;
+//const sleepthresh=600; // this is Far too high?
+const sleepthresh=30;
+
 var ess_values = [];
 var slsnds = 0;
 
@@ -32,14 +40,18 @@ function calc_ess(val) {
 
     // check for non-movement according to the threshold
     const nonmot = stddev < nomothresh;
+    
+
 
     // amount of seconds within non-movement sections
     if (nonmot) {
+      //print(slsnds);
       slsnds+=1;
       if (slsnds >= sleepthresh) {
         return true; // awake
       }
-    } else {
+    } 
+    else {
       slsnds=0;
       return false; // sleep
     }
@@ -56,7 +68,10 @@ var quality = 0;
 setInterval(function() {
     const now = new Date();
     const acc = Bangle.getAccel().mag;
+  
     const swest = calc_ess(acc);
+  
+    //print(swest);
 
     // if currently sleeping, increment quality by one (so it will be a max of 100 in a before being reset)
     if (swest !== undefined) {
@@ -66,9 +81,10 @@ setInterval(function() {
     }
     count++;
     
-    //count up over 100 seconds and 
-     if (count > 100) {
+    //count up over 400 seconds (keep getting file too big -- need to split this up)
+     if (count > 400) {
        count = 0;
+       var file = require("Storage").open("sleepquality.csv","a");
        file.write([getTime().toFixed(0),quality].join(",")+"\n");
        quality = 0;
      }
@@ -84,3 +100,4 @@ WIDGETS["sleepqual"]={
     draw:draw // called to draw the widget
   };
 })()
+
