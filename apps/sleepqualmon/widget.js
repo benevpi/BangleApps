@@ -33,6 +33,7 @@ function calc_ess(val) {
   ess_values.push(val);
 
   if (ess_values.length == winwidth) {
+    
     // calculate standard deviation over ~1s 
     const mean = ess_values.reduce((prev,cur) => cur+prev) / ess_values.length;
     const stddev = Math.sqrt(ess_values.map(val => Math.pow(val-mean,2)).reduce((prev,cur) => prev+cur)/ess_values.length);
